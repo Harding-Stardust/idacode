@@ -11,7 +11,7 @@ IDACode is still in a very early state and bugs are to be expected. Please open 
 
 IDACode has been tested on Windows and macos with IDA 8.4/9.0 and Python 3.12 (older python versions have issues with debugging).
 
-## Setup
+## Setup in Visual Studio Code
 To set up the dependencies for the IDA plugin run:
 
 ```sh
@@ -20,7 +20,7 @@ To set up the dependencies for the IDA plugin run:
 python -m pip install --user debugpy tornado
 ```
 
-Either clone this repository or download a release package from [here](https://github.com/ioncodes/idacode/releases). `ida.zip` reflects the contents of the `ida` folder in this repository. Copy all files into IDAs plugin directory.  
+Either clone this repository or download a release package from https://github.com/ioncodes/idacode/releases `ida.zip` reflects the contents of the `ida` folder in this repository. Copy all files into IDAs plugin directory.  
 
 The next step is to configure your settings to match your environment (optional). Edit `idacode_utils/settings.py` accordingly:
 
@@ -32,6 +32,25 @@ The next step is to configure your settings to match your environment (optional)
 You can now start the plugin by clicking on `IDACode` in the plugins menu.  
 
 The VS Code extension is available on the [marketplace](https://marketplace.visualstudio.com/items?itemName=Layle.idacode). To configure the extension please refer to the extension's [README](https://github.com/ioncodes/idacode/tree/master/idacode#extension-settings).
+
+## Setup in Cursor
+
+To install the extension in Cursor:
+1. Download the VSIX from The https://github.com/ioncodes/idacode/releases/
+2. Open Cursor -> press Ctrl + Shift + P (open command palette) and type: ```extension: install from VSIX```
+
+### To install the Plugin in IDA:
+1. Fork this repo (you just need the files in the IDA dir)
+2. Put both ```idacode.py``` and ```idacode_utils``` in your IDA plugins folder. If you don't know where those directories are then run this code in IDA:
+```python
+import ida_diskio; ida_diskio.get_ida_subdirs("plugins")
+```
+3. Edit ```idacode_utils\settings.py``` and set the ```SCRIPTS_DIR```
+4. Restart IDA
+5. Go to edit -> plugins -> IDAcode (make sure the server starts by looking at the output window)
+6. In cursor, press Ctrl + Shift + P -> ```Idacode: Connect to IDA```
+7. In cursor, press Ctrl + Shift + P -> ```Idacode: Execute script``` (Ctrl + S also triggers the script)
+
 
 ## Usage
 

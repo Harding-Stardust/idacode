@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-r''' This is fork of https://github.com/ioncodes/idacode that works with Cursor (Visual Stuido Fork with AI support) '''
+r''' This is fork of https://github.com/ioncodes/idacode that works with Cursor (Visual Studio Code Fork with AI support)'''
 
 __version__ = "2025-12-15 14:40:13"
 __author__ = "Harding"
