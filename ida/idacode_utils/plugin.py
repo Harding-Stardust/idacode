@@ -11,7 +11,7 @@ try:
     import tornado, debugpy
 except ImportError:
     print("[IDACode] Dependencies missing, run:\n  \"{}\" -m pip install --user debugpy tornado".format(settings.PYTHON))
-    raise ImportError
+    sys.exit()
 import idaapi
 from idacode_utils.socket_handler import SocketHandler
 
