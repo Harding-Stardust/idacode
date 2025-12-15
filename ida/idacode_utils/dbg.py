@@ -1,4 +1,10 @@
-import debugpy
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+'''
+Part of IDAcode
+'''
+
 from debugpy.server import api
 
 def bp(*args):

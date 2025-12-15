@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+'''
+Part of IDAcode
+'''
+
+import os
 import tornado.websocket, debugpy
 import json, tempfile
 import idaapi
@@ -55,16 +63,25 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
         message = json.loads(message)
 
         if message["event"] == "set_workspace":
-            path = message["path"]
+            path = message.get("path", settings.SCRIPT_DIR)
+            if not os.path.exists(path):
+                    print("[IDACode] ERROR: No 'path' in message and no SCRIPT_DIR set in 'settings.py'")
+                    raise FileNotFoundError
+
             hooks.set_script_folder(path)
-            print("[IDACode] Set workspace folder to {}".format(path))
+            print(f"[IDACode] Set workspace folder to {path}")
         elif message["event"] == "attach_debugger":
             start_debug_server()
             self.write_message({
                 "event": "debugger_ready"
             })
         elif message["event"] == "execute_script":
-            script = message["path"]
+            # script = message["path"]
+            script = message.get("path", "")
+            if not script:
+                script = f"{settings.SCRIPT_DIR}\default.py"
+                print(f"[IDACode] WARNING: No path set, using default: {script}")
+
             env = create_env()
             print("[IDACode] Executing {}".format(script))
             idaapi.execute_sync(

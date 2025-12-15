@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+'''
+Part of IDAcode
+'''
+
 import os
 
 script_folder = ""

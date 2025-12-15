@@ -1,8 +1,16 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+'''
+Part of IDAcode, you must set SCRIPT_DIR before running the first time
+'''
+
 HOST = "127.0.0.1"
 PORT = 7065
 DEBUG_PORT = 7066
 ALLOW_UNSAFE_ORIGIN = False
 LOGGING = True
+SCRIPT_DIR = r"E:\backup\tools\Debug\IDA_scripts"
 
 # Heuristically detect the python executable path
 PYTHON = ""

@@ -1,12 +1,21 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+'''
+Part of IDAcode
+'''
+
 import sys, threading, subprocess, logging
 import idacode_utils.settings as settings
 try:
     import tornado, debugpy
 except ImportError:
     print("[IDACode] Dependencies missing, run:\n  \"{}\" -m pip install --user debugpy tornado".format(settings.PYTHON))
-    sys.exit()
+    raise ImportError
 import idaapi
 from idacode_utils.socket_handler import SocketHandler
+
+_G_PLUGIN_VERSION = "0.4.0"
 
 # Source: https://github.com/OALabs/hexcopy-ida/blob/8b0b2a3021d7dc9010c01821b65a80c47d491b61/hexcopy.py#L30
 major, minor = map(int, idaapi.get_kernel_version().split("."))
@@ -62,7 +71,7 @@ class Server:
         if not join_gui_thread(self.thread, 1.0):
             print("[IDACode] Waiting for server to stop...")
             if not join_gui_thread(self.thread, 5.0):
-                print("[IDACode] deadlock while stopping server, please report an issue!\n")
+                print("[IDACode] ERROR: deadlock while stopping server, please report an issue!\n")
         self.thread = None
         self.server = None
         print("[IDACode] Server stopped")
@@ -92,12 +101,6 @@ class Server:
         # Signal that the service is finished
         self.started = False
 
-def get_python_versions():
-    settings_version = subprocess.check_output([settings.PYTHON, "-c", "import sys; print(sys.version + sys.platform)"])
-    settings_version = settings_version.decode("utf-8", "ignore").strip()
-    ida_version = "{}{}".format(sys.version, sys.platform)
-    return (settings_version, ida_version)
-
 class IDACode(idaapi.plugin_t):
     flags = idaapi.PLUGIN_KEEP
     comment = "IDACode"
@@ -106,15 +109,8 @@ class IDACode(idaapi.plugin_t):
     wanted_hotkey = "Ctrl-Shift-I"
 
     def init(self):
-        settings_version, ida_version = get_python_versions()
-        if settings_version != ida_version:
-            print("[IDACode] settings.PYTHON version mismatch, aborting load:")
-            print("[IDACode] IDA interpreter: {}".format(ida_version))
-            print("[IDACode] settings.PYTHON: {}".format(settings_version))
-            return idaapi.PLUGIN_SKIP
-
         self.server = Server()
-        print("[IDACode] Plugin version 0.4.0")
+        print(f"[IDACode] Plugin version {_G_PLUGIN_VERSION}")
         print("[IDACode] Plugin loaded, use Edit -> Plugins -> IDACode to start the server")
         return idaapi.PLUGIN_KEEP
 
