@@ -101,6 +101,12 @@ class Server:
         # Signal that the service is finished
         self.started = False
 
+def get_python_versions():
+    settings_version = subprocess.check_output([settings.PYTHON, "-c", "import sys; print(sys.version + sys.platform)"])
+    settings_version = settings_version.decode("utf-8", "ignore").strip()
+    ida_version = "{}{}".format(sys.version, sys.platform)
+    return (settings_version, ida_version)
+
 class IDACode(idaapi.plugin_t):
     flags = idaapi.PLUGIN_KEEP
     comment = "IDACode"
@@ -109,6 +115,12 @@ class IDACode(idaapi.plugin_t):
     wanted_hotkey = "Ctrl-Shift-I"
 
     def init(self):
+        settings_version, ida_version = get_python_versions()
+        if settings_version != ida_version:
+            print("[IDACode] settings.PYTHON version mismatch, aborting load:")
+            print("[IDACode] IDA interpreter: {}".format(ida_version))
+            print("[IDACode] settings.PYTHON: {}".format(settings_version))
+            return idaapi.PLUGIN_SKIP
         self.server = Server()
         print(f"[IDACode] Plugin version {_G_PLUGIN_VERSION}")
         print("[IDACode] Plugin loaded, use Edit -> Plugins -> IDACode to start the server")

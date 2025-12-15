@@ -10,7 +10,7 @@ PORT = 7065
 DEBUG_PORT = 7066
 ALLOW_UNSAFE_ORIGIN = False
 LOGGING = True
-SCRIPT_DIR = r"E:\backup\tools\Debug\IDA_scripts"
+SCRIPT_DIR = ""
 
 # Heuristically detect the python executable path
 PYTHON = ""
