@@ -15,8 +15,6 @@ except ImportError:
 import idaapi
 from idacode_utils.socket_handler import SocketHandler
 
-_G_PLUGIN_VERSION = "0.4.0"
-
 # Source: https://github.com/OALabs/hexcopy-ida/blob/8b0b2a3021d7dc9010c01821b65a80c47d491b61/hexcopy.py#L30
 major, minor = map(int, idaapi.get_kernel_version().split("."))
 using_ida7api = (major > 6)
@@ -122,7 +120,7 @@ class IDACode(idaapi.plugin_t):
             print("[IDACode] settings.PYTHON: {}".format(settings_version))
             return idaapi.PLUGIN_SKIP
         self.server = Server()
-        print(f"[IDACode] Plugin version {_G_PLUGIN_VERSION}")
+        print(f"[IDACode] Plugin version 0.4.0")
         print("[IDACode] Plugin loaded, use Edit -> Plugins -> IDACode to start the server")
         return idaapi.PLUGIN_KEEP
 
